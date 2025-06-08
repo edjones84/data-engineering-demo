@@ -1,0 +1,8 @@
+websocket-client
+requests
+websockets
+pusherclient~=0.3.0
+praw~=7.8.1
+credentials~=1.1
+gdeltdoc
+ogn-client

@@ -1,0 +1,95 @@
+import sqlite3
+from ogn.client import AprsClient
+from ogn.parser import parse, AprsParseError
+import datetime
+
+# --- SQLite setup ---
+
+conn = sqlite3.connect('../demonstration.db')
+c = conn.cursor()
+
+c.execute('''
+CREATE TABLE IF NOT EXISTS beacons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    raw_message TEXT,
+    reference_timestamp TEXT,
+    aprs_type TEXT,
+    beacon_type TEXT,
+    name TEXT,
+    receiver_name TEXT,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    timestamp TEXT,
+    track REAL,
+    ground_speed REAL,
+    altitude REAL,
+    address TEXT,
+    climb_rate REAL,
+    flightlevel TEXT,
+    user_comment TEXT
+)
+''')
+conn.commit()
+
+
+# --- Processing function ---
+
+def process_beacon(raw_message):
+    try:
+        beacon = parse(raw_message)
+
+        # Ignore if lat or lon missing or None
+        if beacon.get('latitude') is None or beacon.get('longitude') is None:
+            print("Missing lat/lon, skipping")
+            return
+
+        # Prepare values for insertion
+        values = (
+            beacon.get('raw_message'),
+            beacon.get('reference_timestamp').isoformat() if beacon.get('reference_timestamp') else None,
+            beacon.get('aprs_type'),
+            beacon.get('beacon_type'),
+            beacon.get('name'),
+            beacon.get('receiver_name'),
+            beacon.get('latitude'),
+            beacon.get('longitude'),
+            beacon.get('timestamp').isoformat() if beacon.get('timestamp') else None,
+            beacon.get('track'),
+            beacon.get('ground_speed'),
+            beacon.get('altitude'),
+            beacon.get('address'),
+            beacon.get('climb_rate'),
+            beacon.get('flightlevel'),
+            beacon.get('user_comment')
+        )
+
+        c.execute('''
+            INSERT INTO beacons (
+                raw_message, reference_timestamp, aprs_type, beacon_type, name, receiver_name,
+                latitude, longitude, timestamp, track, ground_speed, altitude, address,
+                climb_rate, flightlevel, user_comment
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', values)
+        conn.commit()
+
+        print(f"Inserted beacon: {beacon.get('name')} at lat:{beacon.get('latitude')}, lon:{beacon.get('longitude')}")
+
+    except AprsParseError as e:
+        print('Error parsing beacon:', e)
+    except Exception as e:
+        print('Error processing beacon:', e)
+
+
+
+
+if __name__ == "__main__":
+    # --- Client setup and run ---
+
+    client = AprsClient(aprs_user='N0CALL')
+    client.connect()
+    try:
+        client.run(callback=process_beacon, autoreconnect=True)
+    except KeyboardInterrupt:
+        print('\nStop ogn gateway')
+        client.disconnect()
+        conn.close()
