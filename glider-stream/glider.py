@@ -2,6 +2,14 @@ import sqlite3
 from ogn.client import AprsClient
 from ogn.parser import parse, AprsParseError
 import datetime
+import csv
+import os
+csv_file_path = 'beacons_test_output.csv'
+write_header = not os.path.exists(csv_file_path)
+
+csv_file = open(csv_file_path, mode='a', newline='', encoding='utf-8')
+csv_writer = csv.writer(csv_file)
+
 
 # --- SQLite setup ---
 
@@ -31,6 +39,13 @@ CREATE TABLE IF NOT EXISTS beacons (
 ''')
 conn.commit()
 
+
+if write_header:
+    csv_writer.writerow([
+    "raw_message", "reference_timestamp", "aprs_type", "beacon_type", "name", "receiver_name",
+     "latitude", "longitude", "timestamp", "track", "ground_speed", "altitude", "address",
+    "climb_rate", "flightlevel", "user_comment"
+    ])
 
 # --- Processing function ---
 
@@ -71,6 +86,11 @@ def process_beacon(raw_message):
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', values)
         conn.commit()
+
+
+        # Write to CSV
+        # csv_writer.writerow(values)
+        # csv_file.flush()
 
         print(f"Inserted beacon: {beacon.get('name')} at lat:{beacon.get('latitude')}, lon:{beacon.get('longitude')}")
 
