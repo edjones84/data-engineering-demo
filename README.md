@@ -27,9 +27,6 @@ brew install python
   ```
 
 - **Windows**: Download and install from python.org
-2. Install Required Python Libraries
-Navigate to the project directory and run:
-pip install -r requirements.txt
 
 
 ## 🗃  ️ SQLite Installation
@@ -55,6 +52,13 @@ docker-compose --version
 ## Streaming Lab
 🌐 Glider Stream Integration
 This project uses the python-ogn-client to stream glider data.
+
+First once you have downloaded this git repo you will need to install python libraries:
+
+Navigate to the project directory, open a command line and run:
+```commandline
+pip install -r requirements.txt
+```
 
 ### Option A (without Kafka)
 Run the following in your IDE command line
