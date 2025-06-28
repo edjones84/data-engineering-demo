@@ -1,28 +1,81 @@
-# data-engineering-demo
+# 🚀 Data Engineering Demo
 
-## Installation
+A demo project showcasing data engineering workflows, including SQLite integration, Python-based data processing, and glider stream ingestion using Docker.
 
-###  IDE
-We recommend downloading and using VScode or Pycharm.
+---
 
-### SQLLite
-**Mac**
-1. SQL Lite is usually pre-installed to check go to a terminal window and type:
-```commandline
-sqlite3 --version
+## 🧑‍💻 Recommended IDEs
+
+We recommend using one of the following IDEs for the best development experience:
+
+- Visual Studio Code
+- PyCharm
+
+---
+
+## 🐍 Python Environment Setup
+
+### 1. Install Python (3.8 or later)
+
+- **Mac**: Use [Homebrew](https://brew.sh/)
 ```
-2. If not install using homebrew (homebrew install instructions:https://brew.sh/): 
-```commandline
-brew install sqlite
-```
+brew install python
+  ```
 
-**Windows**
-
-###  Python Libraries
-Ensure all Python libraries are all installed using pip:
-```commandline
+- **Windows**: Download and install from python.org
+2. Install Required Python Libraries
+Navigate to the project directory and run:
 pip install -r requirements.txt
-```
 
-### glider stream
-documentation: https://github.com/glidernet/python-ogn-client
+
+## 🗃  ️ SQLite Installation
+Mac
+SQLite is usually pre-installed. To check:
+
+
+If not installed:
+
+
+Windows
+Download the SQLite tools from the official SQLite website
+Extract the ZIP file and add the folder path to your system’s PATH environment variable.
+Verify installation:
+
+## 🐳 Docker Setup Mac & Windows (Optional if you want to run with Kafka)
+1. Install Docker Desktop
+Download from Docker Desktop
+Follow the installation instructions for your operating system.
+After installation, verify Docker is running by launching PowerShell (windows) or Command Line (Mac) an d running:
+```commandline
+docker --version
+docker-compose --version
+
+```
+## Ingesting Data
+🌐 Glider Stream Integration
+This project uses the python-ogn-client to stream glider data.
+
+### Option A (without Kafka)
+Run the following in your IDE command line
+```bash
+python glider-stream/glider.py
+```
+Go into the glider.py stream and work out what you want to change
+
+
+### Option B (with Kafka)
+Run the following in your IDE command line (ensure docker desktop is running)
+```bash
+docker compose -f glider-stream/kafka/docker-compose.yaml up
+```
+Create a new terminal window and now run the following to start producing data to kafka
+```bash
+python glider-stream/kafka/beacon_producer.py
+```
+Navigate to http://localhost:19000/ to view the messages in Kafdrop
+
+
+Create a new terminal window and now run the following to start consuming data to a local db
+```bash
+python glider-stream/kafka/beacon_consumer.py
+```
