@@ -33,17 +33,14 @@ pip install -r requirements.txt
 
 
 ## 🗃  ️ SQLite Installation
-Mac
-SQLite is usually pre-installed. To check:
+**Mac**
+SQLite is usually pre-installed
 
 
-If not installed:
-
-
-Windows
+**Windows**
 Download the SQLite tools from the official SQLite website
 Extract the ZIP file and add the folder path to your system’s PATH environment variable.
-Verify installation:
+
 
 ## 🐳 Docker Setup Mac & Windows (Optional if you want to run with Kafka)
 1. Install Docker Desktop
