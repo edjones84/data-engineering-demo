@@ -13,6 +13,10 @@ We recommend using one of the following IDEs for the best development experience
 
 ---
 
+## 🧑‍💻Git setup
+- If you do not have git setup please follow the steps in git_setup.md
+---
+
 ## 🐍 Python Environment Setup
 
 ### 1. Install Python (3.8 or later)
