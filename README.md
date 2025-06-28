@@ -51,7 +51,7 @@ docker --version
 docker-compose --version
 
 ```
-## Ingesting Data
+## Streaming Lab
 🌐 Glider Stream Integration
 This project uses the python-ogn-client to stream glider data.
 
