@@ -23,4 +23,4 @@ def countries_etl_job():
 
 #Schedule to run the job every 5 minutes
 
-#
+#Join the job and schedule definitions into a single Definitions object
