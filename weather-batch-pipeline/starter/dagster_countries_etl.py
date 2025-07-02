@@ -21,3 +21,6 @@ def countries_etl_job():
     pass
 
 
+#Schedule to run the job every 5 minutes
+
+#

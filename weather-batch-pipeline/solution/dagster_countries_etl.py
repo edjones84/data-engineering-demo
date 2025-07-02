@@ -31,7 +31,7 @@ def countries_etl_job():
     export_op(db_path)
 
 
-
+# Schedule to run the job every 5 minutes
 basic_schedule = ScheduleDefinition(
     job=countries_etl_job, 
     cron_schedule="*/5 * * * *",
@@ -40,6 +40,7 @@ basic_schedule = ScheduleDefinition(
     description="Runs the countries ETL job every 5 minutes"
 )
 
+# Joins the job and schedule definitions into a single Definitions object
 defs = Definitions(
     jobs=[countries_etl_job],
     schedules=[basic_schedule],
