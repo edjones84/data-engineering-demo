@@ -13,7 +13,7 @@ csv_writer = csv.writer(csv_file)
 
 # --- SQLite setup ---
 
-conn = sqlite3.connect('../demonstration.db')
+conn = sqlite3.connect('demonstration.db')
 c = conn.cursor()
 
 c.execute('''

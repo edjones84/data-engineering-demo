@@ -1,5 +1,5 @@
 websocket-client
-requests
+requests~=2.32.3
 websockets
 pusherclient~=0.3.0
 praw~=7.8.1
@@ -10,5 +10,6 @@ ogn-client
 dagster
 dagit
 dagster-webserver
-pandas
+pandas~=2.3.0
 requests
+kafka-python~=2.2.14

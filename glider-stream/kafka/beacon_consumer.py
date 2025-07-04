@@ -12,7 +12,7 @@ consumer = KafkaConsumer(
 )
 
 if __name__ == "__main__":
-    conn = sqlite3.connect('../../demonstration.db')
+    conn = sqlite3.connect('demonstration.db')
     c = conn.cursor()
 
     c.execute('''
