@@ -62,16 +62,16 @@ This tutorial will guide you through building an automated batch ETL pipeline th
 
 - **Create a virtual environment** (recommended):
   ```bash
-  python -m venv venv
+  python -m venv .venv
   ```
 - **Activate your virtual environment:**
   - **Windows:**
     ```bash
-    venv\Scripts\activate
+    .venv\Scripts\activate
     ```
   - **Mac/Linux:**
     ```bash
-    source venv/bin/activate
+    source .venv/bin/activate
     ```
 
 - **Install required packages:**
