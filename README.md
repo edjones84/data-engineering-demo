@@ -87,6 +87,12 @@ This tutorial will guide you through building an automated batch ETL pipeline th
   cd weather-batch-pipeline/solution
   dagster dev -f dagster_weather_etl_workflow.py
  - In your browser, navigate to http://127.0.0.1:3000
+ 
+Alternatively:
+ - You can run your python script implementation with:
+  ```bash
+  python weather-batch-pipeline/starter/weather_data_etl.py
+  ```
 
 #### 3. Build Your Own Solution
 
@@ -103,6 +109,7 @@ This tutorial will guide you through building an automated batch ETL pipeline th
   dagster dev -f dagster_weather_etl_workflow.py
   ```
 - In your browser, navigate to http://127.0.0.1:3000
+
 
 
 #### 4. Tips
