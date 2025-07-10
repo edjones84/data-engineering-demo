@@ -49,6 +49,81 @@ docker --version
 docker-compose --version
 
 ```
+
+
+
+## 🧑‍💻 Batch Weather Data ETL Tutorial
+
+This tutorial will guide you through building an automated batch ETL pipeline that extracts weather data from an API, loads it into a SQLite database, and exports the results to a CSV file.
+
+### 🏁 Getting Started
+
+#### 1. Set Up Your Python Environment
+
+- **Create a virtual environment** (recommended):
+  ```bash
+  python -m venv venv
+  ```
+- **Activate your virtual environment:**
+  - **Windows:**
+    ```bash
+    venv\Scripts\activate
+    ```
+  - **Mac/Linux:**
+    ```bash
+    source venv/bin/activate
+    ```
+
+- **Install required packages:**
+  ```bash
+  pip install -r requirements.txt
+   ```
+
+#### 2. Explore the Solution
+
+- The `weather-batch-pipeline/solution/` folder contains completed solution files.
+- You can run these files to see the expected output and understand the ETL process:
+  ```bash
+  cd weather-batch-pipeline/solution
+  dagster dev -f dagster_weather_etl_workflow.py
+ - In your browser, navigate to http://127.0.0.1:3000
+
+#### 3. Build Your Own Solution
+
+- Use the starter files in `weather-batch-pipeline/starter/` to build your own ETL pipeline.
+- The main file to edit is `weather_data_etl.py`. Implement the following functions:
+  - `extract_data_as_json`: Fetches weather data from the API.
+  - `transform_json_to_dataframe`: Processes and flattens the JSON into a DataFrame.
+  - `load_dataframe_to_sqllite_db`: Loads new weather data into a SQLite database, avoiding duplicates.
+  - `export_to_csv`: Exports the database table to a CSV file.
+
+- You can run your implementation in dagster with:
+  ```bash
+  cd weather-batch-pipeline/starter
+  dagster dev -f dagster_weather_etl_workflow.py
+  ```
+- In your browser, navigate to http://127.0.0.1:3000
+
+
+#### 4. Tips
+
+- Refer to the solution files if you get stuck or want to check your approach.
+- The ETL pipeline should:
+  1. Extract weather data from the Open-Meteo API.
+  2. Transform the JSON response into a flat DataFrame, including units in column names.
+  3. Load only new rows (by time) into the SQLite database.
+  4. Export the full table to a CSV file.
+
+#### 5. Next Steps
+
+- Once you complete the batch ETL, try modifying the pipeline to handle schema drift or add new weather variables.
+- Explore the streaming lab for real-time data processing with Kafka.
+
+---
+
+
+
+
 ## Streaming Lab
 🌐 Glider Stream Integration
 This project uses the python-ogn-client to stream glider data.
