@@ -91,7 +91,7 @@ This tutorial will guide you through building an automated batch ETL pipeline th
 Alternatively:
  - You can run your python script implementation with:
   ```bash
-  python weather-batch-pipeline/starter/weather_data_etl.py
+  python weather-batch-pipeline/solution/weather_data_etl.py
   ```
 
 #### 3. Build Your Own Solution
