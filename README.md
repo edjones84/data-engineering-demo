@@ -37,8 +37,10 @@ SQLite is usually pre-installed
 **Windows**
 Download the SQLite tools from the official SQLite website
 Extract the ZIP file and add the folder path to your system’s PATH environment variable.
+The one you should be downloading is called: `sqlite-tools-win-x64-3500200.zip`
 
-
+If you are using VS code it is also recommended to download a SQLite Viewer e.g.
+![img.png](img.png)
 ## 🐳 Docker Setup Mac & Windows (Optional if you want to run with Kafka)
 1. Install Docker Desktop
 Download from Docker Desktop
