@@ -30,7 +30,8 @@ brew install python
 
 
 ## 🗃  ️ Postgres Installation
-**Mac**
+### **Mac**
+
 ✅ Step 1:
 Install homebrew by running this on you command line
 ```commandline
@@ -64,7 +65,7 @@ CREATE DATABASE mydb;
 CREATE USER myuser WITH ENCRYPTED PASSWORD 'password';
 GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
 ```
-**Windows**
+### **Windows**
 
 ✅ Step 1: Download Installer
 Go to the official PostgreSQL site:
