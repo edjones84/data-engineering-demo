@@ -29,18 +29,74 @@ brew install python
 - **Windows**: Download and install from python.org
 
 
-## 🗃  ️ SQLite Installation
+## 🗃  ️ Postgres Installation
 **Mac**
-SQLite is usually pre-installed
+✅ Step 1:
+Install homebrew by running this on you command line
+```commandline
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+✅ Step 2:
+Install postgres
+```commandline
+brew install postgresql
+```
+
+✅ Step 3:
+Start (for when in demo) Postgres
+```commandline
+brew services start postgresql
+```
+
+✅ Step 4:
+Start the psql shell (for when in demo)
+```commandline
+psql postgres
+```
 
 
+✅ Step 5:
+In the shell create a database (for when in demo)
+```commandline
+
+CREATE DATABASE mydb;
+CREATE USER myuser WITH ENCRYPTED PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+```
 **Windows**
-Download the SQLite tools from the official SQLite website
-Extract the ZIP file and add the folder path to your system’s PATH environment variable.
-The one you should be downloading is called: `sqlite-tools-win-x64-3500200.zip`
 
-If you are using VS code it is also recommended to download a SQLite Viewer e.g.
-![img.png](img.png)
+✅ Step 1: Download Installer
+Go to the official PostgreSQL site:
+
+🔗 https://www.postgresql.org/download/windows/
+
+Download the PostgreSQL Installer (provided by EDB).
+
+✅ Step 2: Run Installer
+Choose installation directory
+Set a password (password) for the default postgres user (myuser)
+Select port (default is 5432)
+Choose default locale
+
+✅ Step 3: Verify Installation
+Open SQL Shell (psql) from the Start Menu and connect using:
+
+Server: localhost
+Database: postgres
+Port: 5432
+Username: myuser
+Password: password
+
+Step 4: Create Database and User
+In the SQL Shell:
+
+```commandline
+
+CREATE DATABASE mydb;
+CREATE USER myuser WITH ENCRYPTED PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+```
 ## 🐳 Docker Setup Mac & Windows (Optional if you want to run with Kafka)
 1. Install Docker Desktop
 Download from Docker Desktop

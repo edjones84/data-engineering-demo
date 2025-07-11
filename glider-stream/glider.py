@@ -1,64 +1,65 @@
-import sqlite3
+import psycopg2
 from ogn.client import AprsClient
 from ogn.parser import parse, AprsParseError
 import datetime
 import csv
 import os
+
+# CSV setup
 csv_file_path = 'beacons_test_output.csv'
 write_header = not os.path.exists(csv_file_path)
-
 csv_file = open(csv_file_path, mode='a', newline='', encoding='utf-8')
 csv_writer = csv.writer(csv_file)
 
+# --- PostgreSQL setup ---
+conn = psycopg2.connect(
+    dbname="mydb",
+    user="myuser",
+    password="password",
+    host="localhost",  # or your DB host
+    port="5432"        # default PostgreSQL port
+)
+cursor = conn.cursor()
 
-# --- SQLite setup ---
-
-conn = sqlite3.connect('demonstration.db')
-c = conn.cursor()
-
-c.execute('''
+cursor.execute('''
 CREATE TABLE IF NOT EXISTS beacons (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     raw_message TEXT,
     reference_timestamp TEXT,
     aprs_type TEXT,
     beacon_type TEXT,
     name TEXT,
     receiver_name TEXT,
-    latitude REAL NOT NULL,
-    longitude REAL NOT NULL,
+    latitude DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
     timestamp TEXT,
-    track REAL,
-    ground_speed REAL,
-    altitude REAL,
+    track DOUBLE PRECISION,
+    ground_speed DOUBLE PRECISION,
+    altitude DOUBLE PRECISION,
     address TEXT,
-    climb_rate REAL,
+    climb_rate DOUBLE PRECISION,
     flightlevel TEXT,
     user_comment TEXT
 )
 ''')
 conn.commit()
 
-
 if write_header:
     csv_writer.writerow([
-    "raw_message", "reference_timestamp", "aprs_type", "beacon_type", "name", "receiver_name",
-     "latitude", "longitude", "timestamp", "track", "ground_speed", "altitude", "address",
-    "climb_rate", "flightlevel", "user_comment"
+        "raw_message", "reference_timestamp", "aprs_type", "beacon_type", "name", "receiver_name",
+        "latitude", "longitude", "timestamp", "track", "ground_speed", "altitude", "address",
+        "climb_rate", "flightlevel", "user_comment"
     ])
 
 # --- Processing function ---
-
 def process_beacon(raw_message):
     try:
         beacon = parse(raw_message)
 
-        # Ignore if lat or lon missing or None
         if beacon.get('latitude') is None or beacon.get('longitude') is None:
             print("Missing lat/lon, skipping")
             return
 
-        # Prepare values for insertion
         values = (
             beacon.get('raw_message'),
             beacon.get('reference_timestamp').isoformat() if beacon.get('reference_timestamp') else None,
@@ -78,19 +79,14 @@ def process_beacon(raw_message):
             beacon.get('user_comment')
         )
 
-        c.execute('''
+        cursor.execute('''
             INSERT INTO beacons (
                 raw_message, reference_timestamp, aprs_type, beacon_type, name, receiver_name,
                 latitude, longitude, timestamp, track, ground_speed, altitude, address,
                 climb_rate, flightlevel, user_comment
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         ''', values)
         conn.commit()
-
-
-        # Write to CSV
-        # csv_writer.writerow(values)
-        # csv_file.flush()
 
         print(f"Inserted beacon: {beacon.get('name')} at lat:{beacon.get('latitude')}, lon:{beacon.get('longitude')}")
 
@@ -99,12 +95,8 @@ def process_beacon(raw_message):
     except Exception as e:
         print('Error processing beacon:', e)
 
-
-
-
+# --- Client setup and run ---
 if __name__ == "__main__":
-    # --- Client setup and run ---
-
     client = AprsClient(aprs_user='N0CALL')
     client.connect()
     try:
