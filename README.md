@@ -82,14 +82,16 @@ Choose default locale
 
 ✅ Step 3: Verify Installation
 Open SQL Shell (psql) from the Start Menu and connect using:
-
+```commandline
 Server: localhost
 Database: postgres
 Port: 5432
 Username: myuser
 Password: password
+```
 
-Step 4: Create Database and User
+
+✅ Step 4: Create Database and User
 In the SQL Shell:
 
 ```commandline

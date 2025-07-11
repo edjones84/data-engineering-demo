@@ -1,7 +1,8 @@
 from kafka import KafkaConsumer
-import sqlite3
+import psycopg2
 import json
 
+# Kafka consumer setup
 consumer = KafkaConsumer(
     'beacons',
     bootstrap_servers='localhost:19092',
@@ -11,33 +12,42 @@ consumer = KafkaConsumer(
     group_id='beacon-consumer-group'
 )
 
+# PostgreSQL connection setup
+conn = psycopg2.connect(
+    dbname="mydb",
+    user="myuser",
+    password="password",
+    host="localhost",  # or your DB host
+    port="5432"        # default PostgreSQL port
+)
+cursor = conn.cursor()
+
+# Create table if it doesn't exist
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS beacons (
+    id SERIAL PRIMARY KEY,
+    raw_message TEXT,
+    reference_timestamp TEXT,
+    aprs_type TEXT,
+    beacon_type TEXT,
+    name TEXT,
+    receiver_name TEXT,
+    latitude DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
+    timestamp TEXT,
+    track DOUBLE PRECISION,
+    ground_speed DOUBLE PRECISION,
+    altitude DOUBLE PRECISION,
+    address TEXT,
+    climb_rate DOUBLE PRECISION,
+    flightlevel TEXT,
+    user_comment TEXT
+)
+''')
+conn.commit()
+
+# Consume and insert messages
 if __name__ == "__main__":
-    conn = sqlite3.connect('demonstration.db')
-    c = conn.cursor()
-
-    c.execute('''
-    CREATE TABLE IF NOT EXISTS beacons (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        raw_message TEXT,
-        reference_timestamp TEXT,
-        aprs_type TEXT,
-        beacon_type TEXT,
-        name TEXT,
-        receiver_name TEXT,
-        latitude REAL NOT NULL,
-        longitude REAL NOT NULL,
-        timestamp TEXT,
-        track REAL,
-        ground_speed REAL,
-        altitude REAL,
-        address TEXT,
-        climb_rate REAL,
-        flightlevel TEXT,
-        user_comment TEXT
-    )
-    ''')
-    conn.commit()
-
     for msg in consumer:
         beacon = msg.value
         try:
@@ -60,12 +70,12 @@ if __name__ == "__main__":
                 beacon.get('user_comment')
             )
 
-            c.execute('''
+            cursor.execute('''
                 INSERT INTO beacons (
                     raw_message, reference_timestamp, aprs_type, beacon_type, name, receiver_name,
                     latitude, longitude, timestamp, track, ground_speed, altitude, address,
                     climb_rate, flightlevel, user_comment
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ''', values)
             conn.commit()
 
