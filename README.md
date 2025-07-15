@@ -128,7 +128,7 @@ This tutorial will guide you through building an automated batch ETL pipeline th
 - **Activate your virtual environment:**
   - **Windows/Powershell:**
     ```bash
-    .venv\Scripts\activate.ps1
+    .venv\Scripts\Activate.ps1
     ```
   - **Windows/bash:**
     ```bash
