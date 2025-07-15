@@ -45,5 +45,9 @@ def export_to_csv():
 if __name__ == '__main__':
     try:
         ''' Main function to run the ETL process '''
+        json_data = extract_data_as_json(
+            'https://api.open-meteo.com/v1/forecast?latitude=48.5,49,49.5,50,50.5,51&longitude=-2,-1,0,-2.5,-1.5,-0.5&current=wind_speed_10m,wind_direction_10m,temperature_2m,wind_gusts_10m,relative_humidity_2m,rain&forecast_days=1'
+        )
+        print("Extracted JSON Data:", json_data)
     except Exception as e:
         ''' Handle any exceptions that occur during the ETL process '''

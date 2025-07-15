@@ -126,9 +126,13 @@ This tutorial will guide you through building an automated batch ETL pipeline th
   python -m venv .venv
   ```
 - **Activate your virtual environment:**
-  - **Windows:**
+  - **Windows/Powershell:**
     ```bash
-    .venv\Scripts\activate
+    .venv\Scripts\activate.ps1
+    ```
+  - **Windows/bash:**
+    ```bash
+    source .venv/Scripts/activate
     ```
   - **Mac/Linux:**
     ```bash

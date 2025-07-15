@@ -27,36 +27,37 @@ def transform_json_to_dataframe(data):
         raise ValueError("No data provided to transform.")  
     
 
-    # If data is a list, get the first element
+    # If data is a not list, convert it to a list
     if not isinstance(data, list):
         data = [data]
     
-    # print(data)
+    
     all_dfs = []
     for entry in data:
-        # print(entry)
+        
+        # Extract current weather data and units
         current = entry.get('current', {})
         current_units = entry.get('current_units', {})
 
+        
         new_dict = {k: v for k, v in entry.items() if k not in ("current", "current_units")}
 
-        # print(new_dict)
+        
         # Build new column names with units
         for key in current:
             unit = current_units.get(key, '')
             col_name = f"{key}_{unit}" if unit else key
             new_dict[col_name] = current[key]
         
-        # print(new_dict)
+        
 
         df = pd.DataFrame(new_dict, index=[0])
-        # print(df.head())
+        
 
         all_dfs.append(df)
 
     # Concatenate all DataFrames
     final_df = pd.concat(all_dfs, ignore_index=True)
-    # final_df.to_csv('weather.csv', index=False)
     return final_df
 
 
